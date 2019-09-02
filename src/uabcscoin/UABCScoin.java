@@ -5,6 +5,9 @@
  */
 package uabcscoin;
 
+import Controller.CtrolLogin;
+import View.VLogin;
+
 /**
  *
  * @author sears
@@ -15,7 +18,10 @@ public class UABCScoin {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+       
+        VLogin view = new VLogin();
+        CtrolLogin controller = new CtrolLogin(view);
+        controller.init();
     }
     
 }

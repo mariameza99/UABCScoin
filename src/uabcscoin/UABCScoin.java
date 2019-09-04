@@ -6,6 +6,7 @@
 package uabcscoin;
 
 import Controller.CtrolLogin;
+import Model.Usuario;
 import View.VLogin;
 
 /**

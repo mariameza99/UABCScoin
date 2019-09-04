@@ -5,6 +5,15 @@
  */
 package Model;
 
+import DB.ConnectionManager;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author sears
@@ -17,6 +26,7 @@ public class Usuario {
     private String email;
     private String password;
     private String fechaNacimiento;
+    private static final String TABLE = "usuarios";
 
     public int getId() {
         return id;
@@ -67,17 +77,31 @@ public class Usuario {
     }
     
     public static Usuario findbyLogin(String email, String password){
-        String emailDB = "mariamez@gmail.com";
-        String passwordDB = "maria12345";
+        Connection conn=null;
         Usuario usuario = null;
-        
-        if(email.equals(emailDB) && password.equals(passwordDB)){
+        try {
+            conn = ConnectionManager.getConnection();
+            String query = "SELECT * FROM " + TABLE +
+                    " WHERE email = ? " +
+                    "AND PASSWORD = sha1(?)";
+            PreparedStatement pstm = conn.prepareStatement(query);
+            pstm.setString(1, email);
+            pstm.setString(2, password);
+            System.out.println(pstm);
+            ResultSet rs = pstm.executeQuery();
+            if(rs.next()){
             usuario = new Usuario();
-            usuario.setNombre("María");
-            usuario.setApellido("Meza");
-            usuario.setEmail("mariamez@gmail.com");
+            usuario.setId(rs.getInt("IDUSER"));
+            usuario.setNombre(rs.getString("nombre"));
+            usuario.setApellido(rs.getString("apellido"));
+            usuario.setEmail(rs.getString("email"));
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return usuario;
+         return usuario;
     }
             
 }

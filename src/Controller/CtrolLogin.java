@@ -10,6 +10,7 @@ import View.VLogin;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -37,7 +38,9 @@ public class CtrolLogin implements ActionListener{
         Usuario usuario = Usuario.findbyLogin(email, password);
         
         if(usuario != null){
-            
+            JOptionPane.showMessageDialog(view, "Bienvevido " + usuario.getNombre());
+        }else{
+            JOptionPane.showMessageDialog(view, "Datos incorrectos");
         }
     }
     
